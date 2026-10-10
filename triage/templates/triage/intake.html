@@ -366,13 +366,13 @@
             </div>
         {% endif %}
 
-        <form
-            method="POST"
-            enctype="multipart/form-data"
-            action="{% url 'intake' %}"
-            id="intakeForm"
-        >
-            {% csrf_token %}
+          <form
+    method="POST"
+    action="{% url 'intake' %}"
+    enctype="multipart/form-data"
+    class="form-card"
+>
+    {% csrf_token %}
 
             {% if not is_patient %}
                 <div class="field">
