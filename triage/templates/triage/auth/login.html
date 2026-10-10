@@ -1,0 +1,243 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SANJEVA | Login</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #063f46, #0a6973);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 430px;
+            background: white;
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+        }
+
+        .logo {
+            text-align: center;
+            color: #087f8c;
+            font-size: 36px;
+            font-weight: 800;
+            letter-spacing: 2px;
+        }
+
+        .tagline {
+            text-align: center;
+            color: #777;
+            margin-top: 8px;
+            margin-bottom: 32px;
+        }
+
+        h2 {
+            color: #17383d;
+            margin-bottom: 8px;
+        }
+
+        .description {
+            color: #777;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #29484d;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #d6e2e4;
+            border-radius: 10px;
+            margin-bottom: 18px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #087f8c;
+        }
+
+        button,
+        .patient-button {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: bold;
+            text-align: center;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        button {
+            background: #087f8c;
+            color: white;
+        }
+
+        button:hover {
+            background: #066b76;
+        }
+
+        .patient-button {
+            margin-top: 12px;
+            border: 1px solid #087f8c;
+            color: #087f8c;
+            background: #eef9fa;
+        }
+
+        .patient-button:hover {
+            background: #dff3f4;
+        }
+
+        .error {
+            background: #ffe8e8;
+            color: #b42318;
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .register {
+            text-align: center;
+            margin-top: 25px;
+            color: #666;
+        }
+
+        .register a {
+            color: #087f8c;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 22px 0 10px;
+            color: #888;
+            font-size: 13px;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: #e1e9ea;
+        }
+
+        .notice {
+            margin-top: 25px;
+            padding: 12px;
+            background: #eef9fa;
+            border-radius: 10px;
+            color: #456;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 28px 22px;
+            }
+
+            .logo {
+                font-size: 32px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+    <div class="logo">SANJEVA</div>
+
+    <div class="tagline">
+        Smart Healthcare Triage Assistant
+    </div>
+
+    <h2>Welcome Back</h2>
+
+    <p class="description">
+        Staff members can sign in to access the SANJEVA
+        dashboard and reviewer workspace.
+    </p>
+
+    {% if error %}
+        <div class="error">{{ error }}</div>
+    {% endif %}
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="error">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <label for="username">Username</label>
+        <input
+            id="username"
+            type="text"
+            name="username"
+            placeholder="Enter your username"
+            autocomplete="username"
+            required
+        >
+
+        <label for="password">Password</label>
+        <input
+            id="password"
+            type="password"
+            name="password"
+            placeholder="Enter your password"
+            autocomplete="current-password"
+            required
+        >
+
+        <button type="submit">LOGIN TO SANJEVA</button>
+    </form>
+
+    <div class="register">
+        Don't have a staff account?
+        <a href="{% url 'register' %}">Create Account</a>
+    </div>
+
+    <div class="divider">OR</div>
+
+    <a class="patient-button" href="{% url 'patient_portal' %}">
+        Patient? Continue with Phone OTP
+    </a>
+
+    <div class="notice">
+        SANJEVA is a prototype triage-support system.
+        It does not provide medical diagnosis or replace
+        qualified healthcare professionals.
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,264 @@
+{% extends "triage/base.html" %}
+
+{% block title %}
+SANJEVA | Dashboard
+{% endblock %}
+
+{% block content %}
+
+<section class="hero">
+
+    <div class="hero-inner">
+
+        <div>
+
+            <div class="eyebrow">
+                ● SMART HEALTHCARE SUPPORT
+            </div>
+
+            <h1>
+                Better information.
+                <span>Better care.</span>
+            </h1>
+
+            <p>
+                SANJEVA helps organize patient information,
+                symptoms and medical reports into a structured
+                case for qualified healthcare review.
+            </p>
+
+            <div class="hero-actions">
+
+                <a
+                    href="{% url 'intake' %}"
+                    class="btn btn-primary"
+                >
+                    Start Patient Intake
+                </a>
+
+                <a
+                    href="{% url 'review' %}"
+                    class="btn btn-secondary"
+                >
+                    Reviewer Dashboard
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="hero-card">
+
+            <div class="hero-card-top">
+
+                <h3>
+                    SANJEVA Workflow
+                </h3>
+
+                <span class="status-dot"></span>
+
+            </div>
+
+
+            <div class="hero-card-item">
+
+                <div class="hero-card-icon">
+                    🎙️
+                </div>
+
+                <div>
+                    <strong>
+                        Patient Information
+                    </strong>
+
+                    <p>
+                        Text and multilingual voice input
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="hero-card-item">
+
+                <div class="hero-card-icon">
+                    🧠
+                </div>
+
+                <div>
+                    <strong>
+                        Smart Analysis
+                    </strong>
+
+                    <p>
+                        Missing information and urgency signals
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="hero-card-item">
+
+                <div class="hero-card-icon">
+                    📄
+                </div>
+
+                <div>
+                    <strong>
+                        Report Intelligence
+                    </strong>
+
+                    <p>
+                        OCR and relevant report extraction
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="hero-card-item">
+
+                <div class="hero-card-icon">
+                    👨‍⚕️
+                </div>
+
+                <div>
+                    <strong>
+                        Human Review
+                    </strong>
+
+                    <p>
+                        Final decision remains with professionals
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="section">
+
+    <div class="section-heading">
+
+        <h2>
+            One place for pre-consultation information
+        </h2>
+
+        <p>
+            Designed to reduce information gaps before clinical review.
+        </p>
+
+    </div>
+
+
+    <div class="feature-grid">
+
+        <div class="feature-card">
+
+            <div class="feature-icon">
+                🎤
+            </div>
+
+            <h3>
+                Voice & Text
+            </h3>
+
+            <p>
+                Patients can provide symptoms through
+                simple text or voice input.
+            </p>
+
+        </div>
+
+
+        <div class="feature-card">
+
+            <div class="feature-icon">
+                📋
+            </div>
+
+            <h3>
+                Structured History
+            </h3>
+
+            <p>
+                Important information is organized
+                into a review-ready case.
+            </p>
+
+        </div>
+
+
+        <div class="feature-card">
+
+            <div class="feature-icon">
+                🔎
+            </div>
+
+            <h3>
+                Review Support
+            </h3>
+
+            <p>
+                Potential urgency signals and missing
+                information are highlighted for staff.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="quote-section">
+
+    <div class="quote-card">
+
+        <div class="quote-mark">
+            “
+        </div>
+
+        <blockquote>
+            The best way to find yourself is to lose
+            yourself in the service of others.
+        </blockquote>
+
+        <cite>
+            — Mahatma Gandhi
+        </cite>
+
+    </div>
+
+</section>
+
+
+<section class="section">
+
+    <div class="card">
+
+        <h3>
+            Important Safety Notice
+        </h3>
+
+        <p>
+            SANJEVA is a prototype decision-support and
+            pre-consultation information system. It does not
+            provide a medical diagnosis, prescription or
+            replacement for professional healthcare.
+            Final assessment and decisions must be made by
+            qualified healthcare professionals.
+        </p>
+
+    </div>
+
+</section>
+
+{% endblock %}

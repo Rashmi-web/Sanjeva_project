@@ -1,0 +1,1037 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SANJEVA | Reviewer Dashboard</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #eef7f6;
+            color: #173b3a;
+        }
+
+        header {
+            background: #087f78;
+            color: white;
+            padding: 20px 6%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        .header-right {
+            font-size: 14px;
+        }
+
+        .container {
+            width: 92%;
+            max-width: 1250px;
+            margin: 35px auto;
+        }
+
+        .title {
+            color: #087f78;
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #6a817f;
+            margin-bottom: 30px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 22px;
+            border-radius: 14px;
+            box-shadow: 0 7px 20px rgba(0, 0, 0, 0.06);
+        }
+
+        .stat-label {
+            color: #718987;
+            font-size: 13px;
+            margin-bottom: 10px;
+        }
+
+        .stat-number {
+            font-size: 30px;
+            font-weight: bold;
+            color: #087f78;
+        }
+
+        .dashboard-card {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 7px 20px rgba(0, 0, 0, 0.06);
+        }
+
+        .card-title {
+            color: #087f78;
+            font-size: 21px;
+            margin-bottom: 20px;
+        }
+
+        .top-actions {
+            margin-bottom: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .new-case,
+        .export-button {
+            display: inline-block;
+            padding: 12px 18px;
+            border-radius: 8px;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.2s ease;
+        }
+
+        .new-case {
+            background: #087f78;
+            color: white;
+            border: 1px solid #087f78;
+        }
+
+        .new-case:hover {
+            background: #05645f;
+        }
+
+        .export-button {
+            background: white;
+            color: #087f78;
+            border: 1px solid #087f78;
+        }
+
+        .export-button:hover {
+            background: #f0f8f7;
+        }
+
+        .case-filters {
+            display: grid;
+            grid-template-columns: minmax(220px, 2fr) minmax(150px, 1fr) minmax(160px, 1fr) auto;
+            gap: 12px;
+            margin-bottom: 20px;
+            align-items: end;
+        }
+
+        .filter-field {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .filter-field label {
+            color: #42605e;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .filter-field input,
+        .filter-field select {
+            width: 100%;
+            min-height: 43px;
+            padding: 10px 12px;
+            border: 1px solid #d6e5e3;
+            border-radius: 8px;
+            background: #fff;
+            color: #173b3a;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .filter-field input:focus,
+        .filter-field select:focus {
+            border-color: #087f78;
+            box-shadow: 0 0 0 3px rgba(8, 127, 120, 0.10);
+        }
+
+        .clear-filters {
+            min-height: 43px;
+            padding: 10px 15px;
+            border: 1px solid #087f78;
+            border-radius: 8px;
+            background: white;
+            color: #087f78;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .clear-filters:hover {
+            background: #f0f8f7;
+        }
+
+        .filter-summary {
+            color: #718987;
+            font-size: 13px;
+            margin: -5px 0 15px;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+            width: 100%;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            text-align: left;
+            background: #f0f8f7;
+            color: #42605e;
+            padding: 14px;
+            font-size: 13px;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 15px 14px;
+            border-bottom: 1px solid #e5eeee;
+            vertical-align: top;
+        }
+
+        tbody tr:hover {
+            background: #fafdfc;
+        }
+
+        .priority {
+            display: inline-block;
+            padding: 7px 13px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .high {
+            background: #ffe0e0;
+            color: #b32626;
+        }
+
+        .medium {
+            background: #fff0d5;
+            color: #a66300;
+        }
+
+        .routine {
+            background: #def3ec;
+            color: #187457;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 7px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .waiting {
+            background: #fff0d5;
+            color: #9a6200;
+        }
+
+        .reviewed {
+            background: #def3ec;
+            color: #187457;
+        }
+
+        .rejected {
+            background: #ffe0e0;
+            color: #a52828;
+        }
+
+        .symptom-text {
+            max-width: 280px;
+            line-height: 1.5;
+            overflow-wrap: anywhere;
+        }
+
+        .phone-number {
+            white-space: nowrap;
+            line-height: 1.6;
+        }
+
+        .verification-label {
+            display: inline-block;
+            margin-top: 5px;
+            padding: 4px 7px;
+            border-radius: 12px;
+            background: #def3ec;
+            color: #187457;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .unverified-label {
+            display: inline-block;
+            margin-top: 5px;
+            padding: 4px 7px;
+            border-radius: 12px;
+            background: #fff0d5;
+            color: #875300;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .review-button {
+            display: inline-block;
+            padding: 9px 14px;
+            background: #087f78;
+            color: white;
+            text-decoration: none;
+            border-radius: 7px;
+            font-size: 13px;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .review-button:hover {
+            background: #05645f;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 50px;
+            color: #718987;
+        }
+
+        .no-filter-results {
+            display: none;
+            text-align: center;
+            padding: 30px 15px;
+            color: #718987;
+        }
+
+        .pagination-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 22px;
+            padding-top: 18px;
+            border-top: 1px solid #e5eeee;
+        }
+
+        .pagination-info {
+            color: #718987;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .pagination-options {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .pagination-options label {
+            color: #42605e;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .pagination-options select {
+            padding: 9px 10px;
+            border: 1px solid #d6e5e3;
+            border-radius: 7px;
+            color: #173b3a;
+            background: white;
+        }
+
+        .pagination-controls {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .page-button {
+            min-width: 36px;
+            height: 36px;
+            padding: 0 10px;
+            border: 1px solid #d6e5e3;
+            border-radius: 7px;
+            background: white;
+            color: #087f78;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .page-button:hover:not(:disabled) {
+            background: #f0f8f7;
+            border-color: #087f78;
+        }
+
+        .page-button.active {
+            background: #087f78;
+            color: white;
+            border-color: #087f78;
+        }
+
+        .page-button:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+        }
+
+        @media (max-width: 900px) {
+            .stats {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .case-filters {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .title {
+                font-size: 25px;
+            }
+
+            header {
+                flex-direction: column;
+                gap: 10px;
+                align-items: flex-start;
+            }
+
+            .case-filters {
+                grid-template-columns: 1fr;
+            }
+
+            .dashboard-card {
+                padding: 16px;
+            }
+
+            .pagination-section {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">SANJEVA</div>
+    <div class="header-right">Clinical Reviewer Dashboard</div>
+</header>
+
+<div class="container">
+
+    <h1 class="title">Reviewer Dashboard</h1>
+    <p class="subtitle">
+        Review and manage cases prepared by the SANJEVA triage-support system.
+    </p>
+
+    <div class="stats">
+        <div class="stat-card">
+            <div class="stat-label">HIGH PRIORITY</div>
+            <div class="stat-number">{{ high_cases|default:0 }}</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-label">MEDIUM PRIORITY</div>
+            <div class="stat-number">{{ medium_cases|default:0 }}</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-label">ROUTINE</div>
+            <div class="stat-number">{{ routine_cases|default:0 }}</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-label">WAITING FOR REVIEW</div>
+            <div class="stat-number">{{ waiting_cases|default:0 }}</div>
+        </div>
+    </div>
+
+    <div class="top-actions">
+        <a href="/intake/" class="new-case">+ NEW CASE</a>
+
+        {% if cases %}
+        <button type="button" class="export-button" id="exportCsv">
+            ↓ Export CSV
+        </button>
+        {% endif %}
+    </div>
+
+    <div class="dashboard-card">
+
+        <h2 class="card-title">Submitted Cases</h2>
+
+        {% if cases %}
+
+        <div class="case-filters" role="search" aria-label="Search and filter submitted cases">
+
+            <div class="filter-field">
+                <label for="caseSearch">Search Patient ID, name, phone or symptoms</label>
+                <input
+                    id="caseSearch"
+                    type="search"
+                    placeholder="Enter ID, name, phone or symptom"
+                    autocomplete="off"
+                >
+            </div>
+
+            <div class="filter-field">
+                <label for="priorityFilter">Priority</label>
+                <select id="priorityFilter">
+                    <option value="">All priorities</option>
+                    <option value="HIGH">High priority</option>
+                    <option value="MEDIUM">Medium priority</option>
+                    <option value="ROUTINE">Routine</option>
+                </select>
+            </div>
+
+            <div class="filter-field">
+                <label for="statusFilter">Review status</label>
+                <select id="statusFilter">
+                    <option value="">All statuses</option>
+                    <option value="WAITING">Waiting</option>
+                    <option value="UNDER_REVIEW">Under review</option>
+                    <option value="REVIEWED">Reviewed</option>
+                    <option value="REJECTED">Rejected</option>
+                </select>
+            </div>
+
+            <button type="button" class="clear-filters" id="clearFilters">
+                Clear filters
+            </button>
+
+        </div>
+
+        <p class="filter-summary" id="filterSummary" aria-live="polite">
+            Showing all submitted cases.
+        </p>
+
+        <div class="table-wrapper">
+
+            <table id="casesTable">
+
+                <thead>
+                    <tr>
+                        <th>Patient ID</th>
+                        <th>Patient Name</th>
+                        <th>Phone Number</th>
+                        <th>Age</th>
+                        <th>Symptoms</th>
+                        <th>Priority</th>
+                        <th>Status</th>
+                        <th>Created</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody id="casesTableBody">
+
+                    {% for case in cases %}
+                    <tr
+                        class="case-row"
+                        data-patient-id="{{ case.patient_id|default:''|lower }}"
+                        data-patient-name="{{ case.patient_name|default:''|lower }}"
+                        data-phone-number="{{ case.phone_number|default:''|lower }}"
+                        data-symptoms="{{ case.symptoms|striptags|default:''|lower }}"
+                        data-priority="{{ case.priority|default:'' }}"
+                        data-status="{{ case.status|default:'' }}"
+                    >
+                        <td>
+                            <strong>{{ case.patient_id }}</strong>
+                        </td>
+
+                        <td>
+                            {{ case.patient_name|default:"Not provided" }}
+                        </td>
+
+                        <td>
+                            {% if case.phone_number %}
+                                <div class="phone-number">
+                                    {{ case.phone_number }}
+                                </div>
+
+                                {% if case.phone_verified %}
+                                    <span class="verification-label">
+                                        VERIFIED
+                                    </span>
+                                {% else %}
+                                    <span class="unverified-label">
+                                        NOT VERIFIED
+                                    </span>
+                                {% endif %}
+                            {% else %}
+                                <span>Not provided</span>
+                            {% endif %}
+                        </td>
+
+                        <td>{{ case.age }}</td>
+
+                        <td>
+                            <div class="symptom-text">{{ case.symptoms }}</div>
+                        </td>
+
+                        <td>
+                            {% if case.priority == "HIGH" %}
+                                <span class="priority high">HIGH</span>
+                            {% elif case.priority == "MEDIUM" %}
+                                <span class="priority medium">MEDIUM</span>
+                            {% else %}
+                                <span class="priority routine">ROUTINE</span>
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            {% if case.status == "WAITING" %}
+                                <span class="status waiting">WAITING</span>
+                            {% elif case.status == "UNDER_REVIEW" %}
+                                <span class="status waiting">UNDER REVIEW</span>
+                            {% elif case.status == "REVIEWED" %}
+                                <span class="status reviewed">REVIEWED</span>
+                            {% elif case.status == "REJECTED" %}
+                                <span class="status rejected">REJECTED</span>
+                            {% else %}
+                                <span class="status waiting">
+                                    {{ case.status|default:"UNKNOWN" }}
+                                </span>
+                            {% endif %}
+                        </td>
+
+                        <td>{{ case.created_at|date:"d M Y H:i" }}</td>
+
+                        <td>
+                            <a href="/review/case/{{ case.id }}/" class="review-button">
+                                REVIEW
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+
+                    <tr id="noFilterResultsRow" style="display: none;">
+                        <td colspan="9" class="no-filter-results">
+                            No cases match your search or selected filters.
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+
+        </div>
+
+        <div class="pagination-section" id="pagination">
+
+            <div class="pagination-info" id="paginationInfo" aria-live="polite">
+                Showing 0 cases
+            </div>
+
+            <div class="pagination-options">
+                <label for="pageSize">Rows per page</label>
+                <select id="pageSize">
+                    <option value="5">5</option>
+                    <option value="10" selected>10</option>
+                    <option value="20">20</option>
+                    <option value="50">50</option>
+                </select>
+            </div>
+
+            <div
+                class="pagination-controls"
+                id="paginationControls"
+                aria-label="Case table pagination"
+            ></div>
+
+        </div>
+
+        {% else %}
+
+        <div class="empty">
+            <h3>No cases available</h3>
+            <p>Submitted cases will appear here.</p>
+        </div>
+
+        {% endif %}
+
+    </div>
+</div>
+
+<script>
+(function () {
+    const searchInput = document.getElementById("caseSearch");
+    const priorityFilter = document.getElementById("priorityFilter");
+    const statusFilter = document.getElementById("statusFilter");
+    const clearButton = document.getElementById("clearFilters");
+    const summary = document.getElementById("filterSummary");
+    const tableBody = document.getElementById("casesTableBody");
+    const noResultsRow = document.getElementById("noFilterResultsRow");
+    const noResultsCell = noResultsRow
+        ? noResultsRow.querySelector("td")
+        : null;
+
+    const paginationInfo = document.getElementById("paginationInfo");
+    const paginationControls = document.getElementById("paginationControls");
+    const pageSizeSelect = document.getElementById("pageSize");
+    const exportButton = document.getElementById("exportCsv");
+
+    if (
+        !searchInput ||
+        !priorityFilter ||
+        !statusFilter ||
+        !clearButton ||
+        !summary ||
+        !tableBody ||
+        !noResultsRow ||
+        !noResultsCell ||
+        !paginationInfo ||
+        !paginationControls ||
+        !pageSizeSelect
+    ) {
+        return;
+    }
+
+    const rows = Array.from(tableBody.querySelectorAll(".case-row"));
+
+    let currentPage = 1;
+    let filteredRows = [];
+
+    function normalize(value) {
+        return (value || "").toLocaleLowerCase().trim();
+    }
+
+    function getFilteredRows() {
+        const query = normalize(searchInput.value);
+        const selectedPriority = priorityFilter.value;
+        const selectedStatus = statusFilter.value;
+
+        return rows.filter(function (row) {
+            const patientId = normalize(row.dataset.patientId);
+            const patientName = normalize(row.dataset.patientName);
+            const phoneNumber = normalize(row.dataset.phoneNumber);
+            const symptoms = normalize(row.dataset.symptoms);
+            const priority = row.dataset.priority || "";
+            const status = row.dataset.status || "";
+
+            const matchesSearch =
+                !query ||
+                patientId.includes(query) ||
+                patientName.includes(query) ||
+                phoneNumber.includes(query) ||
+                symptoms.includes(query);
+
+            const matchesPriority =
+                !selectedPriority || priority === selectedPriority;
+
+            const matchesStatus =
+                !selectedStatus || status === selectedStatus;
+
+            return matchesSearch && matchesPriority && matchesStatus;
+        });
+    }
+
+    function createPageButton(label, page, options) {
+        const button = document.createElement("button");
+
+        button.type = "button";
+        button.className = "page-button";
+        button.textContent = label;
+
+        if (options && options.active) {
+            button.classList.add("active");
+            button.setAttribute("aria-current", "page");
+        }
+
+        if (options && options.disabled) {
+            button.disabled = true;
+        }
+
+        button.addEventListener("click", function () {
+            currentPage = page;
+            renderTable();
+        });
+
+        return button;
+    }
+
+    function renderPagination(totalPages) {
+        paginationControls.innerHTML = "";
+
+        paginationControls.appendChild(
+            createPageButton("Previous", Math.max(1, currentPage - 1), {
+                disabled: currentPage <= 1
+            })
+        );
+
+        if (totalPages <= 7) {
+            for (let page = 1; page <= totalPages; page++) {
+                paginationControls.appendChild(
+                    createPageButton(page, page, {
+                        active: page === currentPage
+                    })
+                );
+            }
+        } else {
+            const pages = new Set([
+                1,
+                totalPages,
+                currentPage,
+                currentPage - 1,
+                currentPage + 1
+            ]);
+
+            const visiblePages = Array.from(pages)
+                .filter(function (page) {
+                    return page >= 1 && page <= totalPages;
+                })
+                .sort(function (a, b) {
+                    return a - b;
+                });
+
+            let previousPage = 0;
+
+            visiblePages.forEach(function (page) {
+                if (previousPage && page - previousPage > 1) {
+                    const dots = document.createElement("span");
+                    dots.textContent = "…";
+                    dots.style.padding = "0 5px";
+                    dots.style.color = "#718987";
+                    paginationControls.appendChild(dots);
+                }
+
+                paginationControls.appendChild(
+                    createPageButton(page, page, {
+                        active: page === currentPage
+                    })
+                );
+
+                previousPage = page;
+            });
+        }
+
+        paginationControls.appendChild(
+            createPageButton(
+                "Next",
+                Math.min(totalPages, currentPage + 1),
+                {
+                    disabled: currentPage >= totalPages
+                }
+            )
+        );
+    }
+
+    function renderTable() {
+        filteredRows = getFilteredRows();
+
+        const pageSize = Number(pageSizeSelect.value) || 10;
+        const totalFiltered = filteredRows.length;
+        const totalPages = Math.max(1, Math.ceil(totalFiltered / pageSize));
+
+        if (currentPage > totalPages) {
+            currentPage = totalPages;
+        }
+
+        if (currentPage < 1) {
+            currentPage = 1;
+        }
+
+        const startIndex = (currentPage - 1) * pageSize;
+        const endIndex = Math.min(startIndex + pageSize, totalFiltered);
+        const visibleRows = new Set(
+            filteredRows.slice(startIndex, endIndex)
+        );
+
+        rows.forEach(function (row) {
+            row.style.display = visibleRows.has(row) ? "" : "none";
+        });
+
+        const hasResults = totalFiltered > 0;
+
+        noResultsRow.style.display = hasResults ? "none" : "";
+        noResultsCell.style.display = hasResults ? "none" : "table-cell";
+
+        if (hasResults) {
+            paginationInfo.textContent =
+                "Showing " +
+                (startIndex + 1) +
+                "–" +
+                endIndex +
+                " of " +
+                totalFiltered +
+                " case(s)";
+        } else {
+            paginationInfo.textContent = "Showing 0 cases";
+        }
+
+        const hasActiveFilters =
+            searchInput.value.trim() !== "" ||
+            priorityFilter.value !== "" ||
+            statusFilter.value !== "";
+
+        if (hasActiveFilters) {
+            summary.textContent =
+                "Showing " +
+                totalFiltered +
+                " of " +
+                rows.length +
+                " submitted case(s) matching your filters.";
+        } else {
+            summary.textContent =
+                "Showing all " +
+                rows.length +
+                " submitted case(s).";
+        }
+
+        renderPagination(totalPages);
+
+        paginationControls.querySelectorAll(".page-button").forEach(
+            function (button) {
+                button.disabled = button.disabled || !hasResults;
+            }
+        );
+    }
+
+    function escapeCsv(value) {
+        const textValue = String(value == null ? "" : value);
+        return '"' + textValue.replace(/"/g, '""') + '"';
+    }
+
+    function exportCsv() {
+        const headers = [
+            "Patient ID",
+            "Patient Name",
+            "Phone Number",
+            "Phone Verification Status",
+            "Age",
+            "Symptoms",
+            "Priority",
+            "Status",
+            "Created",
+            "Review Link"
+        ];
+
+        const csvRows = [headers.map(escapeCsv).join(",")];
+
+        filteredRows.forEach(function (row) {
+            const cells = row.querySelectorAll("td");
+            const reviewLink = row.querySelector(".review-button");
+            const phoneCell = cells[2];
+            const verificationLabel = phoneCell
+                ? phoneCell.querySelector(
+                    ".verification-label, .unverified-label"
+                )
+                : null;
+
+            const values = [
+                cells[0] ? cells[0].innerText.trim() : "",
+                cells[1] ? cells[1].innerText.trim() : "",
+                phoneCell
+                    ? phoneCell.querySelector(".phone-number")
+                        ? phoneCell.querySelector(".phone-number").innerText.trim()
+                        : ""
+                    : "",
+                verificationLabel
+                    ? verificationLabel.innerText.trim()
+                    : "NOT PROVIDED",
+                cells[3] ? cells[3].innerText.trim() : "",
+                cells[4] ? cells[4].innerText.trim() : "",
+                cells[5] ? cells[5].innerText.trim() : "",
+                cells[6] ? cells[6].innerText.trim() : "",
+                cells[7] ? cells[7].innerText.trim() : "",
+                reviewLink
+                    ? new URL(reviewLink.href, window.location.href).href
+                    : ""
+            ];
+
+            csvRows.push(values.map(escapeCsv).join(","));
+        });
+
+        const csvContent = "\uFEFF" + csvRows.join("\r\n");
+        const blob = new Blob([csvContent], {
+            type: "text/csv;charset=utf-8;"
+        });
+
+        const url = URL.createObjectURL(blob);
+        const downloadLink = document.createElement("a");
+
+        downloadLink.href = url;
+        downloadLink.download = "sanjeva_cases_" +
+            new Date().toISOString().slice(0, 10) +
+            ".csv";
+
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        downloadLink.remove();
+
+        URL.revokeObjectURL(url);
+    }
+
+    searchInput.addEventListener("input", function () {
+        currentPage = 1;
+        renderTable();
+    });
+
+    priorityFilter.addEventListener("change", function () {
+        currentPage = 1;
+        renderTable();
+    });
+
+    statusFilter.addEventListener("change", function () {
+        currentPage = 1;
+        renderTable();
+    });
+
+    pageSizeSelect.addEventListener("change", function () {
+        currentPage = 1;
+        renderTable();
+    });
+
+    clearButton.addEventListener("click", function () {
+        searchInput.value = "";
+        priorityFilter.value = "";
+        statusFilter.value = "";
+        currentPage = 1;
+        renderTable();
+        searchInput.focus();
+    });
+
+    if (exportButton) {
+        exportButton.addEventListener("click", exportCsv);
+    }
+
+    renderTable();
+})();
+</script>
+
+</body>
+</html>

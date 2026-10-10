@@ -1,0 +1,37 @@
+
+<header class="sanjeva-header">
+    <div class="sanjeva-header-inner">
+
+        <a class="sanjeva-brand" href="{% url 'home' %}">
+            <span class="sanjeva-brand-name">SANJEVA</span>
+            <span class="sanjeva-brand-subtitle">Smart Healthcare Support</span>
+        </a>
+
+        <input type="checkbox" id="sanjeva-menu-toggle" class="sanjeva-menu-toggle">
+
+        <label for="sanjeva-menu-toggle" class="sanjeva-menu-button" aria-label="Toggle navigation">
+            <span></span>
+            <span></span>
+            <span></span>
+        </label>
+
+        <nav class="sanjeva-nav" aria-label="Main navigation">
+
+            {% if is_patient %}
+                <a href="{% url 'patient_portal' %}">Patient Portal</a>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'logout' %}" class="sanjeva-nav-logout">Logout</a>
+                {% endif %}
+            {% elif user.is_authenticated %}
+                <a href="{% url 'home' %}">Dashboard</a>
+                <a href="{% url 'intake' %}">Patient Intake</a>
+                <a href="{% url 'review' %}">Reviewer Dashboard</a>
+                <a href="{% url 'logout' %}" class="sanjeva-nav-logout">Logout</a>
+            {% else %}
+                <a href="{% url 'login' %}">Login</a>
+                <a href="{% url 'register' %}" class="sanjeva-nav-primary">Get Started</a>
+            {% endif %}
+
+        </nav>
+    </div>
+</header>

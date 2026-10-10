@@ -1,0 +1,168 @@
+{% extends "triage/base.html" %}
+
+{% block title %}
+SANJEVA | Create Account
+{% endblock %}
+
+{% block content %}
+
+<div class="auth-container">
+
+    <div class="auth-card">
+
+        <div class="auth-logo">
+            S
+        </div>
+
+        <h1>
+            Create your account
+        </h1>
+
+        <p>
+            Get started with the SANJEVA healthcare support platform.
+        </p>
+
+        {% if messages %}
+
+            {% for message in messages %}
+
+                <div class="alert alert-high">
+                    {{ message }}
+                </div>
+
+            {% endfor %}
+
+        {% endif %}
+
+        {% if form.errors %}
+
+            <div class="alert alert-high">
+                Please correct the highlighted information and try again.
+            </div>
+
+        {% endif %}
+
+        <form method="post">
+
+            {% csrf_token %}
+
+            <div class="form-group">
+
+                <label for="username">
+                    Username
+                </label>
+
+                <input
+                    type="text"
+                    id="username"
+                    name="username"
+                    placeholder="Choose a username"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="email">
+                    Email
+                </label>
+
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="Enter your email"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="password">
+                    Password
+                </label>
+
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Create a password"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="confirm_password">
+                    Confirm Password
+                </label>
+
+                <input
+                    type="password"
+                    id="confirm_password"
+                    name="confirm_password"
+                    placeholder="Confirm your password"
+                    required
+                >
+
+            </div>
+
+
+            <div
+                style="
+                    display: flex;
+                    align-items: flex-start;
+                    gap: 10px;
+                    margin-bottom: 20px;
+                    color: var(--muted);
+                    font-size: 12px;
+                "
+            >
+
+                <input
+                    type="checkbox"
+                    required
+                    style="margin-top: 4px;"
+                >
+
+                <span>
+                    I understand that SANJEVA is a healthcare
+                    support prototype and does not provide
+                    medical diagnosis or prescriptions.
+                </span>
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="btn btn-primary"
+                style="width: 100%;"
+            >
+                Create Account
+            </button>
+
+        </form>
+
+
+        <div class="auth-footer">
+
+            Already have an account?
+
+            <a href="{% url 'login' %}">
+                Sign in
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

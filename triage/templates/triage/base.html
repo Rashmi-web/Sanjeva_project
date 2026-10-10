@@ -1,0 +1,225 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="SANJEVA - Smart healthcare pre-consultation and triage support system."
+    >
+
+    <title>
+        {% block title %}
+        SANJEVA
+        {% endblock %}
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="{% static 'triage/css/style.css' %}"
+    >
+
+</head>
+
+<body>
+
+    <header class="site-header">
+
+        <div class="header-container">
+
+            <a
+                href="{% url 'home' %}"
+                class="brand"
+            >
+
+                <div class="brand-mark">
+                    S
+                </div>
+
+                <div class="brand-text">
+
+                    <strong>SANJEVA</strong>
+
+                    <span>
+                        Smart Healthcare Support
+                    </span>
+
+                </div>
+
+            </a>
+
+
+            {% if request.user.is_authenticated %}
+
+            <nav class="main-nav">
+
+                <a href="{% url 'home' %}">
+                    Dashboard
+                </a>
+
+                <a href="{% url 'intake' %}">
+                    Patient Intake
+                </a>
+
+                <a href="{% url 'review' %}">
+                    Review
+                </a>
+
+                <a
+                    href="{% url 'logout' %}"
+                    class="nav-logout"
+                >
+                    Logout
+                </a>
+
+            </nav>
+
+            {% else %}
+
+            <nav class="main-nav">
+
+                <a href="{% url 'login' %}">
+                    Login
+                </a>
+
+                <a
+                    href="{% url 'register' %}"
+                    class="nav-register"
+                >
+                    Get Started
+                </a>
+
+            </nav>
+
+            {% endif %}
+
+        </div>
+
+    </header>
+
+
+    <main class="main-content">
+
+        {% if messages %}
+
+        <div class="message-container">
+
+            {% for message in messages %}
+
+            <div class="message message-{{ message.tags }}">
+
+                {{ message }}
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+        {% endif %}
+
+
+        {% block content %}
+
+        {% endblock %}
+
+    </main>
+
+
+    <footer class="site-footer">
+
+        <div class="footer-container">
+
+            <div class="footer-brand">
+
+                <div class="footer-logo">
+                    S
+                </div>
+
+                <div>
+
+                    <strong>SANJEVA</strong>
+
+                    <p>
+                        Turning scattered health information
+                        into review-ready cases.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <div>
+
+                    <h4>Platform</h4>
+
+                    <a href="{% url 'home' %}">
+                        Dashboard
+                    </a>
+
+                    <a href="{% url 'intake' %}">
+                        Patient Intake
+                    </a>
+
+                    <a href="{% url 'review' %}">
+                        Reviewer Dashboard
+                    </a>
+
+                </div>
+
+
+                <div>
+
+                    <h4>Important</h4>
+
+                    <span>
+                        Human review required
+                    </span>
+
+                    <span>
+                        Not a diagnostic system
+                    </span>
+
+                    <span>
+                        Demo / synthetic data
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            <span>
+                © 2026 SANJEVA
+            </span>
+
+            <span>
+                Built for safer, faster pre-consultation workflows.
+            </span>
+
+        </div>
+
+    </footer>
+
+
+    {% block scripts %}
+
+    {% endblock %}
+
+</body>
+</html>

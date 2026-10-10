@@ -1,0 +1,212 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SANJEVA | Patient Verification</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        body { background: #eef7f6; color: #173b3a; min-height: 100vh; }
+        header { background: #087f78; color: white; padding: 20px 7%; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 25px; font-weight: bold; letter-spacing: 2px; }
+        .header-text { font-size: 14px; }
+        .container { width: 92%; max-width: 620px; margin: 48px auto; }
+        .card { background: white; border-radius: 18px; padding: 32px; box-shadow: 0 7px 24px rgba(0,0,0,.07); }
+        .eyebrow { color: #087f78; font-weight: bold; font-size: 12px; letter-spacing: 1.5px; margin-bottom: 12px; }
+        h1 { color: #087f78; font-size: 30px; margin-bottom: 12px; }
+        .intro { color: #687f7d; line-height: 1.7; margin-bottom: 24px; }
+        label { display: block; font-weight: bold; font-size: 14px; margin: 17px 0 8px; }
+        input { width: 100%; border: 1px solid #c8dddd; border-radius: 9px; padding: 14px; font-size: 16px; }
+        input:focus { outline: 2px solid #b9e5df; border-color: #087f78; }
+        button { width: 100%; border: 0; border-radius: 9px; background: #087f78; color: white; padding: 15px; margin-top: 16px; font-size: 15px; font-weight: bold; cursor: pointer; }
+        button:hover { background: #05645f; }
+        button:disabled { opacity: .6; cursor: wait; }
+        .secondary { background: #dceeee; color: #087f78; }
+        .secondary:hover { background: #cce5e2; }
+        .status { display: none; margin-top: 16px; border-radius: 8px; padding: 12px; line-height: 1.5; }
+        .success { display: block; background: #def3ec; color: #187457; }
+        .error { display: block; background: #ffe0e0; color: #a52828; }
+        .note { margin-top: 22px; padding: 14px; background: #f3f9f8; border-radius: 9px; color: #526866; font-size: 13px; line-height: 1.6; }
+        .hidden { display: none; }
+        .back { display: inline-block; margin-top: 22px; color: #087f78; text-decoration: none; font-weight: bold; }
+        @media(max-width: 600px) { header { padding: 18px 5%; } .card { padding: 23px; } h1 { font-size: 25px; } }
+    </style>
+</head>
+<body>
+<header>
+    <div class="logo">SANJEVA</div>
+    <div class="header-text">Patient Access</div>
+</header>
+
+<main class="container">
+    <section class="card">
+        <div class="eyebrow">SECURE PATIENT ACCESS</div>
+        <h1>Verify your mobile number</h1>
+        <p class="intro">
+            Verify your phone number before completing the patient intake form.
+            Your case will be added to the healthcare facility's review queue.
+        </p>
+
+        <form id="csrf-form">
+            {% csrf_token %}
+        </form>
+
+        <div id="phone-section">
+            <label for="phone_number">Indian mobile number</label>
+            <input id="phone_number" type="tel" inputmode="tel"
+                   autocomplete="tel" placeholder="10-digit mobile number"
+                   maxlength="16" required>
+            <button id="send-otp" type="button">SEND OTP</button>
+        </div>
+
+        <div id="otp-section" class="hidden">
+            <label for="otp">Enter 6-digit OTP</label>
+            <input id="otp" type="text" inputmode="numeric"
+                   autocomplete="one-time-code" maxlength="6"
+                   placeholder="Enter OTP">
+            <button id="verify-otp" type="button">VERIFY OTP</button>
+            <button id="resend-otp" type="button" class="secondary">RESEND OTP</button>
+        </div>
+
+        <div id="status" class="status" role="status" aria-live="polite"></div>
+
+        <div class="note">
+            Never share your OTP with anyone. In local development mode, the
+            OTP is printed in the server terminal instead of being sent by SMS.
+        </div>
+
+        <a href="{% url 'login' %}" class="back">Staff login →</a>
+    </section>
+</main>
+
+<script>
+    const sendUrl = "{% url 'patient_send_otp' %}";
+    const verifyUrl = "{% url 'patient_verify_otp' %}";
+    const intakeUrl = "{% url 'intake' %}";
+
+    const phoneInput = document.getElementById("phone_number");
+    const otpInput = document.getElementById("otp");
+    const otpSection = document.getElementById("otp-section");
+    const statusBox = document.getElementById("status");
+    const sendButton = document.getElementById("send-otp");
+    const verifyButton = document.getElementById("verify-otp");
+    const resendButton = document.getElementById("resend-otp");
+
+    function csrfToken() {
+        return document.querySelector(
+            '#csrf-form input[name="csrfmiddlewaretoken"]'
+        ).value;
+    }
+
+    function showStatus(message, type) {
+        statusBox.textContent = message;
+        statusBox.className = "status " + type;
+    }
+
+    async function postData(url, data) {
+        const body = new URLSearchParams(data);
+        const response = await fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+                "X-CSRFToken": csrfToken()
+            },
+            body: body.toString(),
+            credentials: "same-origin"
+        });
+
+        const result = await response.json();
+        if (!response.ok && !result.error) {
+            result.error = "The request failed. Please try again.";
+        }
+        return result;
+    }
+
+    async function sendOtp() {
+        const phone = phoneInput.value.trim();
+
+        if (!phone) {
+            showStatus("Enter your mobile number first.", "error");
+            return;
+        }
+
+        sendButton.disabled = true;
+
+        try {
+            const result = await postData(sendUrl, {
+                phone_number: phone
+            });
+
+            if (!result.success) {
+                showStatus(result.error || "Could not send OTP.", "error");
+                return;
+            }
+
+            otpSection.classList.remove("hidden");
+            showStatus(result.message, "success");
+
+            if (result.development_mode) {
+                showStatus(
+                    result.message + " Development mode: check the server terminal for the OTP.",
+                    "success"
+                );
+            }
+        } catch (error) {
+            showStatus("Unable to contact the server. Try again.", "error");
+        } finally {
+            sendButton.disabled = false;
+        }
+    }
+
+    async function verifyOtp() {
+        const phone = phoneInput.value.trim();
+        const otp = otpInput.value.trim();
+
+        if (!/^\d{6}$/.test(otp)) {
+            showStatus("Enter the 6-digit OTP.", "error");
+            return;
+        }
+
+        verifyButton.disabled = true;
+
+        try {
+            const result = await postData(verifyUrl, {
+                phone_number: phone,
+                otp: otp
+            });
+
+            if (!result.success) {
+                showStatus(result.error || "Verification failed.", "error");
+                return;
+            }
+
+            showStatus("Phone verified. Opening patient form…", "success");
+            window.location.assign(intakeUrl);
+        } catch (error) {
+            showStatus("Unable to contact the server. Try again.", "error");
+        } finally {
+            verifyButton.disabled = false;
+        }
+    }
+
+    sendButton.addEventListener("click", sendOtp);
+    resendButton.addEventListener("click", sendOtp);
+    verifyButton.addEventListener("click", verifyOtp);
+
+    phoneInput.addEventListener("keydown", event => {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            sendOtp();
+        }
+    });
+
+    otpInput.addEventListener("keydown", event => {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            verifyOtp();
+        }
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,58 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SANJEVA | Submission Confirmation</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        body { background: #eef7f6; color: #173b3a; min-height: 100vh; }
+        header { background: #087f78; color: white; padding: 20px 7%; }
+        .logo { font-size: 25px; font-weight: bold; letter-spacing: 2px; }
+        main { width: 92%; max-width: 650px; margin: 55px auto; }
+        .card { background: white; border-radius: 18px; padding: 35px; text-align: center; box-shadow: 0 7px 24px rgba(0,0,0,.07); }
+        .check { width: 62px; height: 62px; margin: 0 auto 20px; display: grid; place-items: center; border-radius: 50%; background: #def3ec; color: #187457; font-size: 34px; font-weight: bold; }
+        h1 { color: #087f78; font-size: 28px; margin-bottom: 14px; }
+        p { color: #687f7d; line-height: 1.7; }
+        .reference { background: #f3f9f8; border: 1px dashed #087f78; border-radius: 12px; padding: 20px; margin: 25px 0; }
+        .reference span { display: block; color: #687f7d; font-size: 12px; letter-spacing: 1px; margin-bottom: 8px; }
+        .reference strong { font-size: 24px; color: #087f78; overflow-wrap: anywhere; }
+        .note { background: #fff8e8; padding: 15px; border-radius: 9px; text-align: left; margin-top: 18px; color: #66552e; font-size: 13px; line-height: 1.6; }
+        a { display: inline-block; margin-top: 24px; padding: 14px 22px; background: #087f78; color: white; text-decoration: none; border-radius: 9px; font-weight: bold; }
+        a:hover { background: #05645f; }
+    </style>
+</head>
+<body>
+<header><div class="logo">SANJEVA</div></header>
+<main>
+    <section class="card">
+        <div class="check">✓</div>
+        <h1>Information submitted successfully</h1>
+        <p>
+            Your information has been added to the healthcare facility's queue.
+            Keep the reference below for your records.
+        </p>
+
+        <div class="reference">
+            <span>YOUR PATIENT REFERENCE</span>
+            <strong>{{ case.patient_id }}</strong>
+        </div>
+
+        <p>
+            If the facility needs to notify you that your turn is ready,
+            it will use the mobile number you verified.
+        </p>
+
+        <div class="note">
+            This confirmation is not a diagnosis or a guarantee of a specific
+            waiting time. If you experience an emergency, seek urgent medical
+            care instead of waiting for an SMS.
+        </div>
+
+        <a href="{% url 'patient_portal' %}">Finish</a>
+    </section>
+</main>
+</body>
+</html>
+

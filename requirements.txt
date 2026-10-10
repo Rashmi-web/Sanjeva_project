@@ -1,0 +1,6 @@
+Django>=6.1,<6.2
+python-dotenv>=1.0,<2.0
+sarvamai>=0.1
+Pillow>=10.0
+pytesseract>=0.3
+PyMuPDF>=1.24

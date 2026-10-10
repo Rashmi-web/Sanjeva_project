@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SANJEVA | Review Case</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #eef7f6;
+            color: #173b3a;
+        }
+
+        header {
+            background: #087f78;
+            color: white;
+            padding: 20px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        .header-text {
+            font-size: 14px;
+        }
+
+        .container {
+            width: 92%;
+            max-width: 1000px;
+            margin: 35px auto;
+        }
+
+        .title {
+            color: #087f78;
+            text-align: center;
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #687f7d;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 7px 20px rgba(0, 0, 0, 0.06);
+        }
+
+        .card-title {
+            color: #087f78;
+            font-size: 20px;
+            margin-bottom: 18px;
+            border-bottom: 2px solid #dceeee;
+            padding-bottom: 10px;
+        }
+
+        .patient-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .info {
+            background: #f3f9f8;
+            padding: 15px;
+            border-radius: 10px;
+            overflow-wrap: anywhere;
+        }
+
+        .label {
+            font-size: 12px;
+            color: #718987;
+            margin-bottom: 5px;
+        }
+
+        .value {
+            font-size: 17px;
+            font-weight: bold;
+        }
+
+        .priority-box {
+            text-align: center;
+            padding: 25px;
+            border-radius: 12px;
+            background: #f7faf9;
+        }
+
+        .priority {
+            display: inline-block;
+            padding: 10px 30px;
+            border-radius: 30px;
+            font-weight: bold;
+            font-size: 23px;
+            letter-spacing: 1px;
+        }
+
+        .high {
+            background: #ffe0e0;
+            color: #b32626;
+        }
+
+        .medium {
+            background: #fff0d5;
+            color: #a66300;
+        }
+
+        .routine {
+            background: #def3ec;
+            color: #187457;
+        }
+
+        .reason {
+            margin-top: 15px;
+            line-height: 1.6;
+            color: #526866;
+        }
+
+        .content-box {
+            background: #f7faf9;
+            border-radius: 10px;
+            padding: 18px;
+            line-height: 1.7;
+            white-space: pre-line;
+            overflow-wrap: anywhere;
+        }
+
+        .warning {
+            background: #fff8e8;
+            border-left: 4px solid #d99a19;
+            padding: 15px;
+            border-radius: 8px;
+            line-height: 1.6;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 150px;
+            padding: 14px;
+            border: 1px solid #c8dddd;
+            border-radius: 10px;
+            resize: vertical;
+            font-size: 15px;
+            outline: none;
+        }
+
+        textarea:focus {
+            border-color: #087f78;
+        }
+
+        .actions {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .button {
+            border: none;
+            padding: 16px;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .approve {
+            background: #087f78;
+            color: white;
+        }
+
+        .approve:hover {
+            background: #05645f;
+        }
+
+        .reject {
+            background: #a52828;
+            color: white;
+        }
+
+        .reject:hover {
+            background: #862020;
+        }
+
+        .start-review {
+            background: #dceeff;
+            color: #15538a;
+        }
+
+        .start-review:hover {
+            background: #c7e3ff;
+        }
+
+        .reopen {
+            background: #fff0d5;
+            color: #875300;
+        }
+
+        .reopen:hover {
+            background: #ffe4b5;
+        }
+
+        .back {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #087f78;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .status {
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 12px;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+
+        .waiting {
+            background: #fff0d5;
+            color: #9a6200;
+        }
+
+        .under-review {
+            background: #dceeff;
+            color: #15538a;
+        }
+
+        .reviewed {
+            background: #def3ec;
+            color: #187457;
+        }
+
+        .rejected {
+            background: #ffe0e0;
+            color: #a52828;
+        }
+
+        .messages {
+            margin-bottom: 20px;
+        }
+
+        .message {
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+
+        .message.success {
+            background: #def3ec;
+            color: #187457;
+        }
+
+        .message.error {
+            background: #ffe0e0;
+            color: #a52828;
+        }
+
+        .section-heading {
+            color: #087f78;
+            margin: 22px 0 12px;
+            font-size: 17px;
+        }
+
+        .report-link {
+            display: inline-block;
+            color: #087f78;
+            font-weight: bold;
+            margin-top: 12px;
+        }
+
+        .timeline-entry {
+            padding: 15px;
+            margin-bottom: 10px;
+            border-left: 4px solid #0f766e;
+            background: #f0fdfa;
+            border-radius: 5px;
+        }
+
+        .timeline-entry p {
+            margin: 8px 0;
+            line-height: 1.6;
+        }
+
+        .muted {
+            color: #687f7d;
+            font-size: 13px;
+        }
+
+        @media (max-width: 700px) {
+            header {
+                padding: 18px 5%;
+            }
+
+            .patient-grid,
+            .actions {
+                grid-template-columns: 1fr;
+            }
+
+            .title {
+                font-size: 26px;
+            }
+
+            .card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<header>
+    <div class="logo">SANJEVA</div>
+    <div class="header-text">Human Review</div>
+</header>
+
+<div class="container">
+    <a href="{% url 'review' %}" class="back">
+        ← Back to Reviewer Dashboard
+    </a>
+
+    <h1 class="title">Case Review</h1>
+
+    <p class="subtitle">
+        Review the SANJEVA-generated case information before making a decision.
+    </p>
+
+    {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <div class="message {{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {% if case.status == "WAITING" %}
+        <div class="status waiting">WAITING FOR HUMAN REVIEW</div>
+    {% elif case.status == "UNDER_REVIEW" %}
+        <div class="status under-review">CASE UNDER REVIEW</div>
+    {% elif case.status == "REVIEWED" %}
+        <div class="status reviewed">CASE APPROVED / REVIEWED</div>
+    {% elif case.status == "REJECTED" %}
+        <div class="status rejected">CASE REJECTED</div>
+    {% endif %}
+
+    <div class="card">
+        <h2 class="card-title">Patient Information</h2>
+
+        <div class="patient-grid">
+            <div class="info">
+                <div class="label">PATIENT ID</div>
+                <div class="value">{{ case.patient_id }}</div>
+            </div>
+
+            <div class="info">
+                <div class="label">PATIENT NAME</div>
+                <div class="value">
+                    {{ case.patient_name|default:"Not provided" }}
+                </div>
+            </div>
+
+            {% if case.phone_number %}
+                <div class="info">
+                    <div class="label">PHONE NUMBER</div>
+                    <div class="value">{{ case.phone_number }}</div>
+                </div>
+            {% endif %}
+
+            <div class="info">
+                <div class="label">AGE</div>
+                <div class="value">{{ case.age }}</div>
+            </div>
+
+            <div class="info">
+                <div class="label">GENDER</div>
+                <div class="value">{{ case.gender|default:"Not provided" }}</div>
+            </div>
+
+            <div class="info">
+                <div class="label">LANGUAGE</div>
+                <div class="value">{{ case.language }}</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2 class="card-title">SANJEVA Triage Signal</h2>
+
+        <div class="priority-box">
+            {% if case.priority == "HIGH" %}
+                <span class="priority high">HIGH</span>
+            {% elif case.priority == "MEDIUM" %}
+                <span class="priority medium">MEDIUM</span>
+            {% else %}
+                <span class="priority routine">ROUTINE</span>
+            {% endif %}
+
+            <div class="reason">
+                {{ case.priority_reason|default:"No priority reason provided." }}
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2 class="card-title">Reported Symptoms</h2>
+
+        <div class="content-box">{{ case.symptoms }}</div>
+
+        <p style="margin-top: 15px; line-height: 1.6;">
+            <strong>Duration:</strong>
+            {{ case.symptom_duration|default:"Not provided" }}
+        </p>
+    </div>
+
+    <div class="card">
+        <h2 class="card-title">Missing Information</h2>
+
+        {% if case.missing_information %}
+            <div class="warning">{{ case.missing_information }}</div>
+        {% else %}
+            <div class="content-box">
+                No obvious missing information was detected.
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="card">
+        <h2 class="card-title">Follow-Up Questions</h2>
+
+        <div class="content-box">
+            {{ case.follow_up_questions|default:"No additional questions were generated." }}
+        </div>
+    </div>
+
+    <div class="card">
+        <h2 class="card-title">Structured Summary</h2>
+
+        <div class="content-box">
+            {{ case.summary|default:"No summary is available." }}
+        </div>
+    </div>
+
+    <div class="card">
+        <h2 class="card-title">Reviewer Decision & Status Management</h2>
+
+        <p style="line-height: 1.6; margin-bottom: 18px;">
+            Update the review status and add or revise your notes.
+            A status change is recorded in the case activity timeline.
+        </p>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <label for="reviewer_notes" style="display: block; margin-bottom: 10px; font-weight: bold;">
+                Reviewer Notes
+            </label>
+
+            <textarea
+                id="reviewer_notes"
+                name="reviewer_notes"
+                placeholder="Enter your review notes..."
+            >{{ case.reviewer_notes }}</textarea>
+
+            <div class="actions">
+                {% if case.status == "WAITING" %}
+                    <button
+                        type="submit"
+                        name="action"
+                        value="start_review"
+                        class="button start-review"
+                    >
+                        START REVIEW
+                    </button>
+
+                    <button
+                        type="submit"
+                        name="action"
+                        value="approve"
+                        class="button approve"
+                    >
+                        APPROVE / MARK REVIEWED
+                    </button>
+
+                    <button
+                        type="submit"
+                        name="action"
+                        value="reject"
+                        class="button reject"
+                    >
+                        REJECT CASE
+                    </button>
+
+                {% elif case.status == "UNDER_REVIEW" %}
+                    <button
+                        type="submit"
+                        name="action"
+                        value="approve"
+                        class="button approve"
+                    >
+                        COMPLETE REVIEW
+                    </button>
+
+                    <button
+                        type="submit"
+                        name="action"
+                        value="reject"
+                        class="button reject"
+                    >
+                        REJECT CASE
+                    </button>
+
+                {% else %}
+                    <button
+                        type="submit"
+                        name="action"
+                        value="reopen"
+                        class="button reopen"
+                    >
+                        REOPEN CASE
+                    </button>
+                {% endif %}
+            </div>
+        </form>
+
+        {% if case.reviewed_at %}
+            <p class="muted" style="margin-top: 18px;">
+                Decision recorded at:
+                {{ case.reviewed_at|date:"d M Y, h:i A" }}
+            </p>
+        {% endif %}
+    </div>
+
+    <div class="card">
+        <h2 class="card-title">Medical Report Intelligence</h2>
+
+        {% if case.report %}
+            <p><strong>Report:</strong> {{ case.report.name }}</p>
+
+            <a
+                href="{{ case.report.url }}"
+                class="report-link"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                OPEN ORIGINAL REPORT
+            </a>
+
+            <h3 class="section-heading">Extracted Text</h3>
+
+            {% if case.report_text %}
+                <div class="content-box">{{ case.report_text }}</div>
+            {% else %}
+                <p>No text extracted.</p>
+            {% endif %}
+
+            <h3 class="section-heading">Relevant Extracted Lines</h3>
+
+            {% if case.report_findings %}
+                <div class="content-box">{{ case.report_findings }}</div>
+            {% else %}
+                <p>No predefined values detected.</p>
+            {% endif %}
+
+            <p class="warning" style="margin-top: 18px;">
+                <strong>Reviewer verification required.</strong>
+                OCR output may contain errors and must not be treated as a diagnosis.
+            </p>
+        {% else %}
+            <p>No medical report was uploaded for this case.</p>
+        {% endif %}
+    </div>
+
+    <div class="card">
+        <h2 class="card-title">Case Activity Timeline</h2>
+
+        {% for log in logs %}
+            <div class="timeline-entry">
+                <strong>{{ log.get_action_display }}</strong>
+
+                <p>{{ log.details }}</p>
+
+                <span class="muted">
+                    {{ log.created_at|date:"d M Y, h:i A" }}
+                </span>
+            </div>
+        {% empty %}
+            <p>No audit activity recorded.</p>
+        {% endfor %}
+    </div>
+
+    <div class="card">
+        <div class="warning">
+            <strong>Human-in-the-Loop Notice</strong>
+            <br><br>
+            SANJEVA does not make a final medical decision.
+            The information shown here supports triage and must be
+            reviewed by qualified healthcare professionals.
+            Status changes do not replace clinical judgement.
+        </div>
+    </div>
+</div>
+</body>
+</html>

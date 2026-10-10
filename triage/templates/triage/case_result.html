@@ -1,0 +1,833 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>SANJEVA | Case Intelligence</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f8f9;
+            color: #17324d;
+            line-height: 1.6;
+        }
+
+        .navbar {
+            background: #ffffff;
+            border-bottom: 1px solid #dce7eb;
+            padding: 16px 6%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: 800;
+            color: #087f8c;
+            letter-spacing: 1px;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #35566d;
+            padding: 9px 14px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .nav-links a:hover {
+            background: #eaf7f8;
+            color: #087f8c;
+        }
+
+        .logout {
+            background: #087f8c !important;
+            color: white !important;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1250px;
+            margin: 35px auto 60px;
+        }
+
+        .hero {
+            background: linear-gradient(
+                135deg,
+                #087f8c,
+                #0b9aa8
+            );
+            color: white;
+            border-radius: 20px;
+            padding: 35px;
+            margin-bottom: 25px;
+            box-shadow: 0 12px 30px rgba(8, 127, 140, 0.18);
+        }
+
+        .hero-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .hero h1 {
+            font-size: 32px;
+            margin-bottom: 7px;
+        }
+
+        .hero p {
+            opacity: 0.92;
+            max-width: 700px;
+        }
+
+        .patient-badge {
+            background: rgba(255, 255, 255, 0.18);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 12px 18px;
+            border-radius: 12px;
+            font-weight: 700;
+        }
+
+        .alert {
+            border-radius: 14px;
+            padding: 18px 22px;
+            margin-bottom: 25px;
+            font-weight: 700;
+            border: 1px solid;
+        }
+
+        .alert-high {
+            background: #fff0f0;
+            color: #b42318;
+            border-color: #f3b5b0;
+        }
+
+        .alert-medium {
+            background: #fff8e8;
+            color: #9a6700;
+            border-color: #efd38a;
+        }
+
+        .alert-routine {
+            background: #ecf9f1;
+            color: #18794e;
+            border-color: #a8dfc1;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(
+                2,
+                minmax(0, 1fr)
+            );
+            gap: 22px;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid #dfe9ed;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 7px 20px rgba(20, 55, 70, 0.05);
+            margin-bottom: 22px;
+        }
+
+        .card.full {
+            grid-column: 1 / -1;
+        }
+
+        .card h2 {
+            font-size: 19px;
+            margin-bottom: 16px;
+            color: #17324d;
+        }
+
+        .card h3 {
+            font-size: 16px;
+            margin-bottom: 10px;
+            color: #087f8c;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(
+                4,
+                minmax(0, 1fr)
+            );
+            gap: 14px;
+        }
+
+        .info-box {
+            background: #f7fafb;
+            border: 1px solid #e1ebee;
+            border-radius: 12px;
+            padding: 15px;
+        }
+
+        .info-label {
+            display: block;
+            font-size: 12px;
+            color: #708695;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .info-value {
+            font-size: 16px;
+            font-weight: 700;
+            color: #17324d;
+            word-break: break-word;
+        }
+
+        .text-box {
+            background: #f7fafb;
+            border: 1px solid #e1ebee;
+            border-radius: 12px;
+            padding: 18px;
+            white-space: pre-wrap;
+            word-break: break-word;
+            color: #304b5c;
+            min-height: 60px;
+        }
+
+        .no-data {
+            background: #f7fafb;
+            border: 1px dashed #cbd9de;
+            border-radius: 12px;
+            padding: 18px;
+            color: #708695;
+        }
+
+        .question-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .question-item {
+            background: #eef9fa;
+            border-left: 4px solid #087f8c;
+            padding: 13px 15px;
+            border-radius: 8px;
+            color: #315566;
+        }
+
+        .report-message {
+            background: #f7fafb;
+            border: 1px solid #e1ebee;
+            padding: 15px;
+            border-radius: 10px;
+            color: #526b79;
+        }
+
+        .summary-box {
+            background: #102f43;
+            color: #edf7fa;
+            border-radius: 14px;
+            padding: 22px;
+            white-space: pre-wrap;
+            font-family: "Courier New", monospace;
+            font-size: 13px;
+            line-height: 1.7;
+            overflow-x: auto;
+        }
+
+        .notice {
+            background: #fff8e8;
+            border: 1px solid #efd38a;
+            color: #765800;
+            border-radius: 12px;
+            padding: 17px;
+            margin-top: 20px;
+        }
+
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 25px;
+        }
+
+        .btn {
+            display: inline-block;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            padding: 12px 18px;
+            border-radius: 9px;
+            font-size: 14px;
+            font-weight: 700;
+            transition: 0.2s;
+        }
+
+        .btn-primary {
+            background: #087f8c;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #066b76;
+        }
+
+        .btn-secondary {
+            background: #eaf1f4;
+            color: #315566;
+        }
+
+        .btn-secondary:hover {
+            background: #dce8ec;
+        }
+
+        .btn-review {
+            background: #17324d;
+            color: white;
+        }
+
+        .btn-review:hover {
+            background: #0e2435;
+        }
+
+        .footer {
+            text-align: center;
+            color: #78909c;
+            font-size: 13px;
+            padding: 20px;
+        }
+
+        @media (max-width: 900px) {
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .card.full {
+                grid-column: auto;
+            }
+
+            .info-grid {
+                grid-template-columns: repeat(
+                    2,
+                    minmax(0, 1fr)
+                );
+            }
+
+        }
+
+        @media (max-width: 600px) {
+
+            .navbar {
+                padding: 14px 4%;
+            }
+
+            .nav-links {
+                gap: 2px;
+            }
+
+            .nav-links a {
+                padding: 7px 8px;
+                font-size: 12px;
+            }
+
+            .container {
+                width: 94%;
+                margin-top: 20px;
+            }
+
+            .hero {
+                padding: 25px 20px;
+            }
+
+            .hero h1 {
+                font-size: 25px;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+
+            .btn {
+                text-align: center;
+                width: 100%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<nav class="navbar">
+
+    <div class="logo">
+        SANJEVA
+    </div>
+
+    <div class="nav-links">
+
+        <a href="{% url 'home' %}">
+            Dashboard
+        </a>
+
+        <a href="{% url 'review' %}">
+            Reviewer
+        </a>
+
+        <a
+            href="{% url 'logout' %}"
+            class="logout"
+        >
+            Logout
+        </a>
+
+    </div>
+
+</nav>
+
+
+<main class="container">
+
+
+    <section class="hero">
+
+        <div class="hero-top">
+
+            <div>
+
+                <h1>
+                    Case Intelligence
+                </h1>
+
+                <p>
+                    SANJEVA has organized the submitted
+                    patient information into a structured
+                    case for qualified human review.
+                </p>
+
+            </div>
+
+            <div class="patient-badge">
+
+                Patient ID:
+                {{ case.patient_id }}
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    {% if case.priority == "HIGH" %}
+
+        <div class="alert alert-high">
+
+            🔴 Potential High Urgency Signal
+
+            <br>
+
+            <span>
+                {{ case.priority_reason }}
+            </span>
+
+        </div>
+
+    {% elif case.priority == "MEDIUM" %}
+
+        <div class="alert alert-medium">
+
+            🟠 Potential Medium Urgency Signal
+
+            <br>
+
+            <span>
+                {{ case.priority_reason }}
+            </span>
+
+        </div>
+
+    {% else %}
+
+        <div class="alert alert-routine">
+
+            🟢 Routine Review Signal
+
+            <br>
+
+            <span>
+                {{ case.priority_reason }}
+            </span>
+
+        </div>
+
+    {% endif %}
+
+
+    <div class="grid">
+
+
+        <div class="card full">
+
+            <h2>
+                Patient Information
+            </h2>
+
+            <div class="info-grid">
+
+                <div class="info-box">
+
+                    <span class="info-label">
+                        Patient ID
+                    </span>
+
+                    <span class="info-value">
+                        {{ case.patient_id }}
+                    </span>
+
+                </div>
+
+
+                <div class="info-box">
+
+                    <span class="info-label">
+                        Age
+                    </span>
+
+                    <span class="info-value">
+                        {{ case.age }}
+                    </span>
+
+                </div>
+
+
+                <div class="info-box">
+
+                    <span class="info-label">
+                        Gender
+                    </span>
+
+                    <span class="info-value">
+                        {{ case.gender|default:"Not provided" }}
+                    </span>
+
+                </div>
+
+
+                <div class="info-box">
+
+                    <span class="info-label">
+                        Language
+                    </span>
+
+                    <span class="info-value">
+                        {{ case.language }}
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <h2>
+                Reported Symptoms
+            </h2>
+
+            <div class="text-box">
+                {{ case.symptoms }}
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <h2>
+                Symptom Duration
+            </h2>
+
+            {% if case.symptom_duration %}
+
+                <div class="text-box">
+                    {{ case.symptom_duration }}
+                </div>
+
+            {% else %}
+
+                <div class="no-data">
+                    Symptom duration was not provided.
+                </div>
+
+            {% endif %}
+
+        </div>
+
+
+        <div class="card">
+
+            <h2>
+                Missing Information
+            </h2>
+
+            {% if case.missing_information %}
+
+                <div class="text-box">
+                    {{ case.missing_information }}
+                </div>
+
+            {% else %}
+
+                <div class="no-data">
+                    No obvious missing information
+                    was detected.
+                </div>
+
+            {% endif %}
+
+        </div>
+
+
+        <div class="card">
+
+            <h2>
+                Follow-Up Questions
+            </h2>
+
+            {% if case.follow_up_questions %}
+
+                <div class="text-box">
+                    {{ case.follow_up_questions }}
+                </div>
+
+            {% else %}
+
+                <div class="no-data">
+                    No additional questions were generated.
+                </div>
+
+            {% endif %}
+
+        </div>
+
+
+        <div class="card full">
+
+            <h2>
+                Medical Report Intelligence
+            </h2>
+
+            {% if case.report %}
+
+                <h3>
+                    Uploaded Report
+                </h3>
+
+                <div class="text-box">
+
+                    {{ case.report.name }}
+
+                </div>
+
+                <br>
+
+                <h3>
+                    Detected Report Findings
+                </h3>
+
+                {% if case.report_findings %}
+
+                    <div class="text-box">
+                        {{ case.report_findings }}
+                    </div>
+
+                {% else %}
+
+                    <div class="no-data">
+
+                        No predefined report values
+                        were detected by the prototype.
+
+                    </div>
+
+                {% endif %}
+
+                <br>
+
+                <h3>
+                    Extracted Report Text
+                </h3>
+
+                {% if case.report_text %}
+
+                    <div class="text-box">
+                        {{ case.report_text }}
+                    </div>
+
+                {% else %}
+
+                    <div class="no-data">
+
+                        No text was extracted
+                        from the uploaded report.
+
+                    </div>
+
+                {% endif %}
+
+            {% else %}
+
+                <div class="report-message">
+
+                    No medical report was uploaded
+                    for this case.
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+
+        <div class="card full">
+
+            <h2>
+                Structured Case Summary
+            </h2>
+
+            {% if case.summary %}
+
+                <div class="summary-box">
+                    {{ case.summary }}
+                </div>
+
+            {% else %}
+
+                <div class="no-data">
+
+                    No structured summary
+                    is available.
+
+                </div>
+
+            {% endif %}
+
+
+            <div class="notice">
+
+                <strong>
+                    Human Review Required
+                </strong>
+
+                <br>
+
+                SANJEVA provides information organization
+                and prototype urgency signals only.
+                It does not provide a medical diagnosis,
+                prescription, or final clinical decision.
+
+                The final assessment must be made by
+                a qualified healthcare professional.
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <div class="actions">
+
+        <a
+            href="{% url 'intake' %}"
+            class="btn btn-primary"
+        >
+            + New Patient Case
+        </a>
+
+
+        <a
+            href="{% url 'review_case' case.id %}"
+            class="btn btn-review"
+        >
+            Send to Human Review
+        </a>
+
+
+        <a
+            href="{% url 'review' %}"
+            class="btn btn-secondary"
+        >
+            Reviewer Dashboard
+        </a>
+
+
+        <a
+            href="{% url 'home' %}"
+            class="btn btn-secondary"
+        >
+            Back to Dashboard
+        </a>
+
+    </div>
+
+
+</main>
+
+
+<footer class="footer">
+
+    SANJEVA — Smart Healthcare Triage Assistant
+
+    <br>
+
+    Prototype for demonstration and human-in-the-loop
+    healthcare workflow support.
+
+</footer>
+
+
+</body>
+
+</html>

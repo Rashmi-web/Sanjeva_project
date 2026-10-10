@@ -1,0 +1,761 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SANJEVA | Patient Health Intake</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #eef7f6;
+            color: #173b3a;
+        }
+
+        header {
+            background: #087f78;
+            color: white;
+            padding: 18px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .brand {
+            font-size: 25px;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .container {
+            width: 92%;
+            max-width: 1000px;
+            margin: 35px auto;
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        .eyebrow {
+            color: #087f78;
+            font-weight: bold;
+            font-size: 12px;
+            letter-spacing: 2px;
+            margin-bottom: 12px;
+        }
+
+        h1 {
+            color: #087f78;
+            font-size: 34px;
+            margin-bottom: 12px;
+        }
+
+        .subtitle {
+            color: #687f7d;
+            line-height: 1.7;
+            max-width: 720px;
+            margin: 0 auto;
+        }
+
+        .notice {
+            background: #e0f2fe;
+            border-left: 4px solid #0284c7;
+            padding: 16px;
+            border-radius: 9px;
+            line-height: 1.6;
+            margin-bottom: 22px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 28px;
+            margin-bottom: 22px;
+            box-shadow: 0 7px 20px rgba(0, 0, 0, 0.06);
+        }
+
+        .card-title {
+            color: #087f78;
+            font-size: 21px;
+            margin-bottom: 18px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #dceeee;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .field {
+            margin-bottom: 18px;
+            min-width: 0;
+        }
+
+        .field.full {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #c8dddd;
+            border-radius: 9px;
+            background: #fff;
+            color: #173b3a;
+            font-size: 15px;
+            outline: none;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #087f78;
+            box-shadow: 0 0 0 3px rgba(8, 127, 120, 0.1);
+        }
+
+        textarea {
+            min-height: 135px;
+            resize: vertical;
+            line-height: 1.6;
+        }
+
+        .hint {
+            display: block;
+            color: #687f7d;
+            font-size: 12px;
+            margin-top: 7px;
+            line-height: 1.5;
+        }
+
+        .button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            border: none;
+            border-radius: 9px;
+            padding: 14px 20px;
+            background: #087f78;
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.2s ease;
+        }
+
+        .button:hover {
+            background: #05645f;
+        }
+
+        .button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .button.secondary {
+            background: #15538a;
+        }
+
+        .button.secondary:hover {
+            background: #103f69;
+        }
+
+        .messages {
+            margin-bottom: 20px;
+        }
+
+        .message {
+            padding: 13px 15px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+
+        .message.success {
+            background: #def3ec;
+            color: #187457;
+        }
+
+        .message.error {
+            background: #ffe0e0;
+            color: #a52828;
+        }
+
+        .message.warning {
+            background: #fff0d5;
+            color: #875300;
+        }
+
+        .message.info {
+            background: #e0f2fe;
+            color: #15538a;
+        }
+
+        .status-message {
+            margin-top: 13px;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        .status-message.error {
+            color: #a52828;
+        }
+
+        .status-message.success {
+            color: #187457;
+        }
+
+        .consent {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        .consent input {
+            width: auto;
+            flex-shrink: 0;
+            margin-top: 4px;
+        }
+
+        .consent span {
+            font-weight: normal;
+        }
+
+        .actions {
+            margin-top: 22px;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 25px 15px;
+            color: #687f7d;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        @media (max-width: 700px) {
+            header {
+                padding: 18px 5%;
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            nav {
+                gap: 14px;
+            }
+
+            .container {
+                margin: 25px auto;
+            }
+
+            h1 {
+                font-size: 27px;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .field.full {
+                grid-column: auto;
+            }
+
+            .button {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<header>
+    <div class="brand">SANJEVA</div>
+
+    <nav>
+        {% if is_patient %}
+            <a href="{% url 'patient_portal' %}">Patient Portal</a>
+        {% else %}
+            <a href="{% url 'home' %}">Dashboard</a>
+            <a href="{% url 'review' %}">Reviewer Dashboard</a>
+            <a href="{% url 'logout' %}">Logout</a>
+        {% endif %}
+    </nav>
+</header>
+
+<main class="container">
+    <section class="hero">
+        <div class="eyebrow">SMART HEALTHCARE SUPPORT</div>
+        <h1>Patient Health Intake</h1>
+        <p class="subtitle">
+            Provide clear information about the patient's symptoms and health
+            history to help healthcare professionals prepare for a human review.
+        </p>
+    </section>
+
+    {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <div class="message {{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <div class="notice">
+        <strong>Important:</strong>
+        SANJEVA supports triage and information collection. It does not replace
+        a qualified healthcare professional or emergency medical care.
+    </div>
+
+    <section class="card">
+        <h2 class="card-title">Patient Information</h2>
+
+        {% if is_patient %}
+            <div class="notice">
+                <strong>Phone verified:</strong>
+                {{ verified_phone }}
+                <br>
+                Your mobile number has been verified. Complete the form below
+                to submit the patient's health information.
+            </div>
+        {% endif %}
+
+        <form
+            method="POST"
+            enctype="multipart/form-data"
+            action="{% url 'intake' %}"
+            id="intakeForm"
+        >
+            {% csrf_token %}
+
+            {% if not is_patient %}
+                <div class="field">
+                    <label for="patient_id">Patient ID (Optional)</label>
+                    <input
+                        type="text"
+                        id="patient_id"
+                        name="patient_id"
+                        placeholder="Leave blank to generate an ID automatically"
+                    >
+                    <span class="hint">
+                        If left blank, SANJEVA generates a unique patient ID.
+                    </span>
+                </div>
+            {% endif %}
+
+            <div class="grid">
+                <div class="field">
+                    <label for="patient_name">Patient Full Name *</label>
+                    <input
+                        type="text"
+                        id="patient_name"
+                        name="patient_name"
+                        maxlength="150"
+                        autocomplete="name"
+                        placeholder="Enter patient's full name"
+                        required
+                    >
+                </div>
+
+                <div class="field">
+                    <label for="age">Age *</label>
+                    <input
+                        type="number"
+                        id="age"
+                        name="age"
+                        min="0"
+                        max="120"
+                        required
+                        placeholder="Enter age"
+                    >
+                </div>
+
+                <div class="field">
+                    <label for="gender">Gender</label>
+                    <select id="gender" name="gender">
+                        <option value="">Prefer not to say</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label for="language">Preferred Language</label>
+                    <select id="language" name="language">
+                        <option value="English">English</option>
+                        <option value="Hindi">Hindi</option>
+                        <option value="Odia">Odia</option>
+                    </select>
+                </div>
+
+                <div class="field full">
+                    <label for="symptoms">Reported Symptoms *</label>
+                    <textarea
+                        id="symptoms"
+                        name="symptoms"
+                        required
+                        placeholder="Describe the patient's symptoms, when they started, and any relevant details..."
+                    ></textarea>
+                    <span class="hint">
+                        You can type your symptoms or use voice input below.
+                        Review the recognized text before submitting.
+                    </span>
+                </div>
+
+                <div class="field full">
+                    <label for="recordButton">Voice Input</label>
+                    <button
+                        type="button"
+                        class="button secondary"
+                        id="recordButton"
+                    >
+                        START VOICE RECORDING
+                    </button>
+                    <p id="voiceStatus" class="hint">
+                        Voice input is optional. Allow microphone access when
+                        prompted, speak clearly, and stop recording when finished.
+                    </p>
+                    <p
+                        id="voiceError"
+                        class="status-message error"
+                        role="alert"
+                    ></p>
+                </div>
+
+                <div class="field full">
+                    <label for="symptom_duration">Symptom Duration</label>
+                    <input
+                        type="text"
+                        id="symptom_duration"
+                        name="symptom_duration"
+                        placeholder="For example: 2 days, 3 weeks, since yesterday"
+                    >
+                </div>
+
+                <div class="field full">
+                    <label for="report">Medical Report (Optional)</label>
+                    <input
+                        type="file"
+                        id="report"
+                        name="report"
+                        accept=".pdf,.jpg,.jpeg,.png"
+                    >
+                    <span class="hint">
+                        Accepted formats: PDF, JPG, JPEG and PNG.
+                        Extracted text must be checked by a healthcare professional.
+                    </span>
+                </div>
+
+                <div class="field full">
+                    <label class="consent" for="consent">
+                        <input
+                            type="checkbox"
+                            id="consent"
+                            name="consent"
+                            required
+                        >
+                        <span>
+                            I confirm that the information is provided for
+                            healthcare support and consent is given for
+                            processing this information.
+                        </span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="actions">
+                <button type="submit" class="button" id="submitButton">
+                    GENERATE CASE INTELLIGENCE
+                </button>
+            </div>
+        </form>
+    </section>
+</main>
+
+<footer class="footer">
+    <strong>SANJEVA</strong> — Smart Healthcare Triage Assistant
+    <br>
+    Prototype • Human review required
+</footer>
+
+<script>
+    function getCookie(name) {
+        const cookies = document.cookie ? document.cookie.split(";") : [];
+
+        for (const cookie of cookies) {
+            const trimmed = cookie.trim();
+
+            if (trimmed.startsWith(name + "=")) {
+                return decodeURIComponent(
+                    trimmed.substring(name.length + 1)
+                );
+            }
+        }
+
+        return "";
+    }
+
+    const recordButton = document.getElementById("recordButton");
+    const symptomsInput = document.getElementById("symptoms");
+    const voiceStatus = document.getElementById("voiceStatus");
+    const voiceError = document.getElementById("voiceError");
+    const languageSelect = document.getElementById("language");
+    const intakeForm = document.getElementById("intakeForm");
+    const submitButton = document.getElementById("submitButton");
+
+    let mediaRecorder = null;
+    let audioChunks = [];
+    let recordingStream = null;
+    let isTranscribing = false;
+
+    if (recordButton) {
+        recordButton.addEventListener("click", async function () {
+            voiceError.textContent = "";
+
+            if (isTranscribing) {
+                return;
+            }
+
+            if (mediaRecorder && mediaRecorder.state === "recording") {
+                mediaRecorder.stop();
+                recordButton.disabled = true;
+                recordButton.textContent = "PROCESSING RECORDING...";
+                return;
+            }
+
+            if (
+                !navigator.mediaDevices ||
+                !navigator.mediaDevices.getUserMedia ||
+                !window.MediaRecorder
+            ) {
+                voiceError.textContent =
+                    "Voice recording is unavailable in this browser. Please type your symptoms instead.";
+                return;
+            }
+
+            try {
+                recordingStream =
+                    await navigator.mediaDevices.getUserMedia({
+                        audio: true
+                    });
+
+                audioChunks = [];
+                mediaRecorder = new MediaRecorder(recordingStream);
+
+                mediaRecorder.addEventListener(
+                    "dataavailable",
+                    function (event) {
+                        if (event.data && event.data.size > 0) {
+                            audioChunks.push(event.data);
+                        }
+                    }
+                );
+
+                mediaRecorder.addEventListener(
+                    "stop",
+                    async function () {
+                        isTranscribing = true;
+
+                        try {
+                            const audioBlob = new Blob(audioChunks, {
+                                type: mediaRecorder.mimeType || "audio/webm"
+                            });
+
+                            if (!audioBlob.size) {
+                                throw new Error(
+                                    "No audio was recorded. Please try again."
+                                );
+                            }
+
+                            const formData = new FormData();
+
+                            formData.append(
+                                "audio",
+                                audioBlob,
+                                "patient_voice.webm"
+                            );
+
+                            formData.append(
+                                "language",
+                                languageSelect.value
+                            );
+
+                            const csrfToken = getCookie("csrftoken");
+
+                            if (!csrfToken) {
+                                throw new Error(
+                                    "Security token is missing. Refresh the page and try again."
+                                );
+                            }
+
+                            voiceStatus.textContent =
+                                "Converting speech to text. Please wait...";
+
+                            const response = await fetch(
+                                "{% url 'speech_to_text' %}",
+                                {
+                                    method: "POST",
+                                    headers: {
+                                        "X-CSRFToken": csrfToken
+                                    },
+                                    body: formData,
+                                    credentials: "same-origin"
+                                }
+                            );
+
+                            let result;
+
+                            try {
+                                result = await response.json();
+                            } catch {
+                                throw new Error(
+                                    "The server returned an unexpected response. Please try again."
+                                );
+                            }
+
+                            if (!response.ok || !result.success) {
+                                throw new Error(
+                                    result.error ||
+                                    "Speech recognition failed. Please type your symptoms or try recording again."
+                                );
+                            }
+
+                            const transcript =
+                                result.text || result.transcript || "";
+
+                            if (!transcript.trim()) {
+                                throw new Error(
+                                    "No speech could be recognized. Please speak clearly and try again."
+                                );
+                            }
+
+                            symptomsInput.value =
+                                symptomsInput.value.trim()
+                                    ? symptomsInput.value.trim() +
+                                      "\n" + transcript.trim()
+                                    : transcript.trim();
+
+                            voiceStatus.textContent =
+                                "Transcript added to Reported Symptoms. Review and edit it before submitting.";
+
+                            symptomsInput.focus();
+                        } catch (error) {
+                            voiceError.textContent = error.message;
+                            voiceStatus.textContent =
+                                "Voice transcription was not completed.";
+                        } finally {
+                            if (recordingStream) {
+                                recordingStream.getTracks().forEach(
+                                    track => track.stop()
+                                );
+                                recordingStream = null;
+                            }
+
+                            isTranscribing = false;
+                            recordButton.disabled = false;
+                            recordButton.textContent =
+                                "START VOICE RECORDING";
+                        }
+                    }
+                );
+
+                mediaRecorder.start();
+
+                recordButton.textContent = "STOP RECORDING";
+                voiceStatus.textContent =
+                    "Recording... Speak clearly and select Stop Recording when finished.";
+            } catch (error) {
+                if (recordingStream) {
+                    recordingStream.getTracks().forEach(
+                        track => track.stop()
+                    );
+                    recordingStream = null;
+                }
+
+                voiceError.textContent =
+                    "Could not access the microphone. Check browser permissions and try again.";
+                recordButton.disabled = false;
+                recordButton.textContent = "START VOICE RECORDING";
+            }
+        });
+    }
+
+    if (intakeForm) {
+        intakeForm.addEventListener("submit", function (event) {
+            if (isTranscribing) {
+                event.preventDefault();
+                voiceError.textContent =
+                    "Please wait for voice transcription to finish before submitting.";
+                return;
+            }
+
+            if (
+                mediaRecorder &&
+                mediaRecorder.state === "recording"
+            ) {
+                event.preventDefault();
+                voiceError.textContent =
+                    "Stop the voice recording and wait for transcription before submitting.";
+                return;
+            }
+
+            if (!intakeForm.checkValidity()) {
+                event.preventDefault();
+                intakeForm.reportValidity();
+                return;
+            }
+
+            submitButton.disabled = true;
+            submitButton.textContent = "PROCESSING CASE...";
+        });
+    }
+</script>
+</body>
+</html>
